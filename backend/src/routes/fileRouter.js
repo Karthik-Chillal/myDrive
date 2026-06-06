@@ -1,8 +1,6 @@
 import { Router } from 'express';
+import { uploadFile } from '../controllers/fileController.js';
+import verifyToken from '../middleware/authMiddleware.js';
 const fileRouter = Router();
-fileRouter.post('/upload', (req, res) => {
-    console.log(req.files);
-
-    return res.status(200).json({ message: 'success' });
-});
+fileRouter.post('/upload', verifyToken, uploadFile);
 export { fileRouter };
