@@ -1,7 +1,10 @@
 import express from 'express';
-const app = express();
+import 'dotenv/config';
 import authRouter from './routes/auth.js';
 import protectedRoute from './routes/protectedRoutes.js';
+import './config/db.js';
+
+const app = express();
 app.use(express.json());
 app.use('/auth', authRouter);
 app.use('/protected', protectedRoute);
