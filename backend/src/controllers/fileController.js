@@ -10,25 +10,19 @@ export const uploadFile = async (req, res) => {
         const uploadedFile = req.files.ufile;
         const uploadFilePath = req.url;
         console.log(uploadFilePath);
-        const parent_folder_id = req.body.parent_folder_id;
-        if (!parent_folder_id) {
-            return res
-                .status(400)
-                .json({ message: 'Parent Folder ID required' });
-        }
-        const new_file = await Files.create({
-            file_name: uploadedFile.name,
-            user: req.userId,
-            parent_folder_id: parent_folder_id,
-            path: null,
-            server_path: null,
-        });
-        new_file.path = `http://localhost:${process.env.PORT}/folders/${parent_folder_id}`;
-        new_file.serverPath = path.join(
+        const server_path = path.join(
             process.cwd(),
             'uploads',
             new_file._id.toString()
         );
+        const new_file = await Files.create({
+            file_name: uploadedFile.name,
+            user: req.userId,
+            parent_folder_id: req.params.id,
+            path: null,
+            server_path: server_path,
+        });
+        new_file.path = `http://localhost:${process.env.PORT}/folders/${parent_folder_id}`;
         await new_file.save();
         await uploadedFile.mv(new_file.server_path);
         return res

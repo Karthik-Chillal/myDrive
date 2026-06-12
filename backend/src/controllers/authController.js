@@ -1,7 +1,8 @@
 import User from '../models/User.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-
+import Folders from '../models/Folders.js';
+import 'dotenv/config';
 export const register = async (req, res) => {
     try {
         const { username, password } = req.body;
@@ -16,7 +17,12 @@ export const register = async (req, res) => {
             username,
             password: hashedPassword,
         });
-
+        await Folders.create({
+            folder_name: 'home',
+            user: user._id,
+            parent_folder_id: null,
+            home_id: process.env.HOME,
+        });
         res.status(201).json({ message: 'User registered successfully.' });
     } catch (err) {
         console.error(err);

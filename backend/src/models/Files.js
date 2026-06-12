@@ -9,6 +9,7 @@ const filesSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Folders',
         required: true,
+        default: '/home',
     },
     createdAt: { type: Date, default: Date.now },
 });

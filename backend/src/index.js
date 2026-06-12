@@ -5,6 +5,7 @@ import protectedRoute from './routes/protectedRoutes.js';
 import connectDB from './config/db.js';
 import { fileRouter } from './routes/fileRouter.js';
 import fileUpload from 'express-fileupload';
+import folderRouter from './routes/folderRouter.js';
 
 const app = express();
 
@@ -16,6 +17,7 @@ app.use(fileUpload());
 app.use('/auth', authRouter);
 app.use('/protected', protectedRoute);
 app.use('/files', fileRouter);
+app.use('/folders', folderRouter);
 app.get('/', (req, res) => {
     res.send('hello');
 });
