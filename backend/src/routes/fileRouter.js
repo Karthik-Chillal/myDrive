@@ -1,6 +1,12 @@
 import { Router } from 'express';
 import { uploadFile } from '../controllers/fileController.js';
 import verifyToken from '../middleware/authMiddleware.js';
+import fileUpload from 'express-fileupload';
 const fileRouter = Router();
-// fileRouter.post('/:id/upload', verifyToken, uploadFile);
+fileRouter.post(
+    '/:id/upload',
+    verifyToken,
+    fileUpload({ limits: { fileSize: 1 * 1024 * 1024 * 1024 } }),
+    uploadFile
+);
 export { fileRouter };

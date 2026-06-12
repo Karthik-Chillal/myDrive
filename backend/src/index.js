@@ -4,7 +4,6 @@ import authRouter from './routes/auth.js';
 import protectedRoute from './routes/protectedRoutes.js';
 import connectDB from './config/db.js';
 import { fileRouter } from './routes/fileRouter.js';
-import fileUpload from 'express-fileupload';
 import folderRouter from './routes/folderRouter.js';
 
 const app = express();
@@ -13,7 +12,7 @@ const app = express();
 connectDB();
 
 app.use(express.json());
-app.use(fileUpload());
+app.use(express.urlencoded({ extended: true }));
 app.use('/auth', authRouter);
 app.use('/protected', protectedRoute);
 app.use('/files', fileRouter);

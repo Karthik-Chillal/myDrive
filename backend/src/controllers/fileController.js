@@ -1,6 +1,6 @@
 import Files from '../models/Files.js';
-import fileUpload from 'express-fileupload';
 import path from 'node:path';
+
 export const uploadFile = async (req, res) => {
     try {
         if (!req.files || Object.keys(req.files).length == 0) {
@@ -10,19 +10,20 @@ export const uploadFile = async (req, res) => {
         const uploadedFile = req.files.ufile;
         const uploadFilePath = req.url;
         console.log(uploadFilePath);
+        const new_file = await Files.create({
+            file_name: uploadedFile.name,
+            user: req.userId,
+            parent_folder_id: req.params.id,
+            server_path: null,
+            size: uploadedFile.size,
+            mimetype: uploadedFile.mimetype,
+        });
         const server_path = path.join(
             process.cwd(),
             'uploads',
             new_file._id.toString()
         );
-        const new_file = await Files.create({
-            file_name: uploadedFile.name,
-            user: req.userId,
-            parent_folder_id: req.params.id,
-            path: null,
-            server_path: server_path,
-        });
-        new_file.path = `http://localhost:${process.env.PORT}/folders/${parent_folder_id}`;
+        new_file.server_path = server_path;
         await new_file.save();
         await uploadedFile.mv(new_file.server_path);
         return res
