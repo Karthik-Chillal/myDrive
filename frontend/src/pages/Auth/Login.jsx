@@ -1,42 +1,49 @@
-import { useAuthStore } from '../../store';
+import { useAuthStore } from '../../../zustand/store';
 import { useEffect, useState } from 'react';
 import api from '../../services/api';
-
+import { useNavigate } from 'react-router-dom';
 const Login = () => {
+  const navigate = useNavigate();
   const token = useAuthStore((state) => state.token);
   const login = useAuthStore((state) => state.setToken);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   useEffect(() => {
+    if (token) {
+      navigate('/home');
+    }
     console.log(token);
-  }, [token]);
+  }, [token, navigate]);
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await api.post('auth/login', {
-        username: username,
-        password: password,
-      });
-
-      login(response.data);
+      if (!token) {
+        const response = await api.post('auth/login', {
+          username: username,
+          password: password,
+        });
+        login(response.data.token);
+      }
+      navigate('/home');
     } catch (error) {
-      console.log(error);
+      console.log(error.response?.data);
     }
   };
   return (
     <div>
       <form method="POST" onSubmit={handleLogin}>
-        <label htmlFor="username">Username: </label>
+        <label htmlFor="username-login">Username: </label>
         <input
           type="text"
-          id="username"
+          id="username-login"
           name="username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
         />
-        <label htmlFor="password">Password: </label>
+        <label htmlFor="password-login">Password: </label>
         <input
           type="password"
+          id="password-login"
           name="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
@@ -44,7 +51,7 @@ const Login = () => {
         <button type="submit">submit</button>
       </form>
       <div>
-        <button>sign up</button>
+        <button onClick={() => navigate('/register')}>sign up</button>
       </div>
     </div>
   );
