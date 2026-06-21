@@ -92,10 +92,32 @@ export const getHomeFolder = async (req, res) => {
 export const deleteFolder = async (req, res) => {
   try {
     const folderId = req.params.id;
-    const folder = await Folders.findById(folderId);
+    const folder = await Folders.findOne({ _id: folderId, user: req.userId });
+    if (!folder) {
+      return res.status(404).json({ error: 'Folder not found' });
+    }
     await folder.deleteOne();
     console.log('after');
-    return res.status(200).json('successful');
+    return res.status(200).json({ message: 'successful' });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+};
+
+export const renameFolder = async (req, res) => {
+  try {
+    const folderId = req.params.id;
+    const folderName = req.body.folder_name;
+    if (!folderName) {
+      return res.status(400).json({ error: 'Folder name is required' });
+    }
+    const folder = await Folders.findOne({ _id: folderId, user: req.userId });
+    if (!folder) {
+      return res.status(404).json({ error: 'Folder not found' });
+    }
+    folder.folder_name = folderName;
+    await folder.save();
+    return res.status(200).json({ message: 'successful' });
   } catch (err) {
     return res.status(500).json({ error: err.message });
   }
