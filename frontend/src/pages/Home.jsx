@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import api from '../services/api';
 import { useHomeFoldersStore } from '../../zustand/store';
+import FolderCreate from '../components/FolderCreate';
 
 export const Home = () => {
   const folders = useHomeFoldersStore((state) => state.folders);
@@ -17,38 +18,35 @@ export const Home = () => {
           console.log('Folders:', fetchedFolders);
         }
       } catch (error) {
-        console.log('Error fetching folders:', error.response?.data || error.message);
+        console.log(
+          'Error fetching folders:',
+          error.response?.data || error.message
+        );
       }
     };
     fetchFolders();
   }, [setFolders]);
-  const handleCreateHomeFolder = async (e) => {
-    e.preventDefault();
-    const folderName = e.target.folder_name.value;
 
-    const response = await api.post('/folders/create', {
-      folder_name: folderName,
-    });
-    const res = await api.get('/folders/');
-    const fetchedFolders = res.data.contents.folders;
-    setFolders(fetchedFolders);
-    console.log(response.data);
-  };
+  // const getFolders = (e) => {
+  //   e.preventDefault();
+  //   const folder_id = null;
+  // };
   return (
     <div>
       <div>
-        <form onSubmit={handleCreateHomeFolder}>
-          <label htmlFor="folder-name">Folder Name: </label>
-          <input type="text" name="folder_name" id="folder-name" />
-          <button>submit</button>
-        </form>
+        <FolderCreate></FolderCreate>
       </div>
       <div>
         <h3>Folders:</h3>
         <ul>
-          {folders && folders.map((folder) => (
-            <li key={folder._id}>{folder.folder_name}</li>
-          ))}
+          {folders &&
+            folders.map((folder) => (
+              <li>
+                <a href={`/folders/${folder._id}`} key={folder._id}>
+                  {folder.folder_name}
+                </a>
+              </li>
+            ))}
         </ul>
       </div>
     </div>
