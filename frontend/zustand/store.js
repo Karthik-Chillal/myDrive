@@ -14,7 +14,7 @@ export const useAuthStore = create(
   )
 );
 
-export const useHomeFoldersStore = create((set) => {
+export const useFoldersStore = create((set) => {
   return {
     folders: [],
     setFolders: (foldersList) => set({ folders: foldersList }),

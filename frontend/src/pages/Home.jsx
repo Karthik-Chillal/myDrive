@@ -1,20 +1,17 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import api from '../services/api';
-import { useHomeFoldersStore } from '../../zustand/store';
 import FolderCreate from '../components/FolderCreate';
+import { Link } from 'react-router-dom';
 
 export const Home = () => {
-  const folders = useHomeFoldersStore((state) => state.folders);
-  const setFolders = useHomeFoldersStore((state) => state.setFolders);
-
+  const [currFolders, setCurrFolders] = useState([]);
   useEffect(() => {
     const fetchFolders = async () => {
+      const response = await api.get('/folders');
       try {
-        const response = await api.get('/folders');
-        console.log('Response data:', response.data);
         if (response.data?.contents) {
           const fetchedFolders = response.data.contents.folders;
-          setFolders(fetchedFolders);
+          setCurrFolders(fetchedFolders);
           console.log('Folders:', fetchedFolders);
         }
       } catch (error) {
@@ -25,7 +22,7 @@ export const Home = () => {
       }
     };
     fetchFolders();
-  }, [setFolders]);
+  }, [setCurrFolders]);
 
   // const getFolders = (e) => {
   //   e.preventDefault();
@@ -34,17 +31,19 @@ export const Home = () => {
   return (
     <div>
       <div>
-        <FolderCreate></FolderCreate>
+        <FolderCreate
+          currFolders={currFolders}
+          setCurrFolders={setCurrFolders}
+          parentFolderId={null}
+        ></FolderCreate>
       </div>
       <div>
         <h3>Folders:</h3>
         <ul>
-          {folders &&
-            folders.map((folder) => (
-              <li>
-                <a href={`/folders/${folder._id}`} key={folder._id}>
-                  {folder.folder_name}
-                </a>
+          {currFolders &&
+            currFolders.map((folder) => (
+              <li key={folder._id}>
+                <Link to={`/folders/${folder._id}`}>{folder.folder_name}</Link>
               </li>
             ))}
         </ul>
