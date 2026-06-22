@@ -9,7 +9,7 @@ const Sidebar = () => {
   ];
 
   return (
-    <div className="flex flex-col w-full h-full p-4 space-y-2 text-base">
+    <div className="flex flex-col w-full h-full p-4 space-y-2 text-base bg-blue-200">
       <ul className="flex flex-col gap-1 w-full mt-4">
         {links.map((link) => (
           <li key={link.name} className="w-full">

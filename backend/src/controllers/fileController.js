@@ -5,10 +5,14 @@ import Folders from '../models/Folders.js';
 
 export const uploadFile = async (req, res) => {
   try {
-    if (!req.files || Object.keys(req.files).length == 0) {
+    if (!req.files || Object.keys(req.files).length == 0 || !req.files.ufile) {
       return res.status(400).json({ message: 'No files uploaded.' });
     }
-    const uploadedFile = req.files.ufile;
+
+    const uploadedFiles = Array.isArray(req.files.ufile) 
+      ? req.files.ufile 
+      : [req.files.ufile];
+
     const uploadFilePath = req.url;
     console.log(uploadFilePath);
 
@@ -24,25 +28,34 @@ export const uploadFile = async (req, res) => {
       parentFolderId = homeFolder._id;
     }
 
-    const new_file = await Files.create({
-      file_name: uploadedFile.name,
-      user: req.userId,
-      parent_folder_id: parentFolderId,
-      server_path: null,
-      size: uploadedFile.size,
-      mimetype: uploadedFile.mimetype,
-    });
-    const server_path = path.join(
-      process.cwd(),
-      'uploads',
-      new_file._id.toString()
-    );
-    new_file.server_path = server_path;
-    await new_file.save();
-    await uploadedFile.mv(new_file.server_path);
+    const savedFiles = [];
+
+    for (const file of uploadedFiles) {
+      const new_file = await Files.create({
+        file_name: file.name,
+        user: req.userId,
+        parent_folder_id: parentFolderId,
+        server_path: null,
+        size: file.size,
+        mimetype: file.mimetype,
+      });
+      
+      const server_path = path.join(
+        process.cwd(),
+        'uploads',
+        new_file._id.toString()
+      );
+      
+      new_file.server_path = server_path;
+      await new_file.save();
+      await file.mv(new_file.server_path);
+      
+      savedFiles.push(new_file);
+    }
+
     return res
       .status(201)
-      .json({ message: 'File upload successful', file: new_file });
+      .json({ message: 'Files upload successful', files: savedFiles });
   } catch (err) {
     console.log(err);
     return res.status(500).json({ error: err.message || err });

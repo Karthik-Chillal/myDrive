@@ -5,9 +5,12 @@ import FileUpload from '../components/FileUpload';
 import { Link, useNavigate } from 'react-router-dom';
 import './Home.css';
 
+import BackButton from '../components/BackButton';
+
 export const Home = () => {
   const [currFolders, setCurrFolders] = useState([]);
   const [currFiles, setCurrFiles] = useState([]);
+  const [showActions, setShowActions] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -94,31 +97,35 @@ export const Home = () => {
   };
 
   return (
-    <div className="flex flex-col gap-8 w-full max-w-7xl mx-auto">
-      {/* Action Toolbar */}
-      <div className="flex items-center gap-4 bg-white p-4 rounded-xl shadow-sm border border-gray-200">
-        <FolderCreate
-          currFolders={currFolders}
-          setCurrFolders={setCurrFolders}
-          parentFolderId={null}
-        />
-        <FileUpload setCurrFiles={setCurrFiles} parentFolderId={null} />
+    <div className="flex flex-col justify-items-center gap-8 w-full max-w-7xl mx-auto">
+      <div className="flex justify-between items-center w-full relative z-50">
+        <BackButton />
+        <div className="relative">
+          <button
+            onClick={() => setShowActions(!showActions)}
+            className="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className={`w-5 h-5 transition-transform ${showActions ? 'rotate-45' : ''}`}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+            </svg>
+            {showActions ? 'Close Menu' : 'Add New'}
+          </button>
+
+          {showActions && (
+            <div className="absolute top-12 right-0 w-[500px] max-w-[90vw] flex flex-col justify-center items-center gap-4 bg-white p-4 rounded-xl shadow-2xl border border-gray-200 transition-all animate-in fade-in zoom-in-95 duration-200">
+              <FolderCreate
+                currFolders={currFolders}
+                setCurrFolders={setCurrFolders}
+                parentFolderId={null}
+              />
+              <FileUpload setCurrFiles={setCurrFiles} parentFolderId={null} />
+            </div>
+          )}
+        </div>
       </div>
 
-      <button className="back-btn">
-        <svg
-          height="16"
-          width="16"
-          xmlns="http://www.w3.org/2000/svg"
-          version="1.1"
-          viewBox="0 0 1024 1024"
-        >
-          <path d="M874.690416 495.52477c0 11.2973-9.168824 20.466124-20.466124 20.466124l-604.773963 0 188.083679 188.083679c7.992021 7.992021 7.992021 20.947078 0 28.939099-4.001127 3.990894-9.240455 5.996574-14.46955 5.996574-5.239328 0-10.478655-1.995447-14.479783-5.996574l-223.00912-223.00912c-3.837398-3.837398-5.996574-9.046027-5.996574-14.46955 0-5.433756 2.159176-10.632151 5.996574-14.46955l223.019353-223.029586c7.992021-7.992021 20.957311-7.992021 28.949332 0 7.992021 8.002254 7.992021 20.957311 0 28.949332l-188.073446 188.073446 604.753497 0C865.521592 475.058646 874.690416 484.217237 874.690416 495.52477z"></path>
-        </svg>
-        <span>Back</span>
-      </button>
       {/* Folders Section */}
-      <div onDoubleClick={() => navigate(`/folders/${id}`)}>
+      <div>
         <h3 className="text-xl font-semibold text-gray-800 mb-4">Folders</h3>
         {currFolders && currFolders.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
@@ -126,6 +133,7 @@ export const Home = () => {
               <div
                 key={folder._id}
                 className="flex flex-col justify-between bg-white p-5 rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-shadow"
+                onDoubleClick={() => navigate(`/folders/${folder._id}`)}
               >
                 <div className="flex items-center gap-3 mb-4 overflow-hidden">
                   <svg

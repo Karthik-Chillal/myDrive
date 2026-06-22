@@ -4,10 +4,12 @@ import FolderCreate from '../components/FolderCreate';
 import FileUpload from '../components/FileUpload';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import BackButton from '../components/BackButton';
 
 const Folders = () => {
   const [folders, setFolders] = useState([]);
   const [files, setFiles] = useState([]);
+  const [showActions, setShowActions] = useState(false);
   const { folderId } = useParams();
 
   useEffect(() => {
@@ -90,17 +92,33 @@ const Folders = () => {
 
   return (
     <div className="flex flex-col gap-8 w-full max-w-7xl mx-auto">
-      {/* Action Toolbar */}
-      <div className="flex items-center gap-4 bg-white p-4 rounded-xl shadow-sm border border-gray-200">
-        <FolderCreate
-          setCurrFolders={setFolders}
-          currFolders={folders}
-          parentFolderId={folderId}
-        />
-        <FileUpload
-          setCurrFiles={setFiles}
-          parentFolderId={folderId}
-        />
+      <div className="flex justify-between items-center w-full relative z-50">
+        <BackButton />
+        <div className="relative">
+          <button
+            onClick={() => setShowActions(!showActions)}
+            className="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className={`w-5 h-5 transition-transform ${showActions ? 'rotate-45' : ''}`}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+            </svg>
+            {showActions ? 'Close Menu' : 'Add New'}
+          </button>
+
+          {showActions && (
+            <div className="absolute top-12 right-0 w-[500px] max-w-[90vw] flex flex-col justify-center items-center gap-4 bg-white p-4 rounded-xl shadow-2xl border border-gray-200 transition-all animate-in fade-in zoom-in-95 duration-200">
+              <FolderCreate
+                setCurrFolders={setFolders}
+                currFolders={folders}
+                parentFolderId={folderId}
+              />
+              <FileUpload
+                setCurrFiles={setFiles}
+                parentFolderId={folderId}
+              />
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Folders Section */}

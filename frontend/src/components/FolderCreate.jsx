@@ -31,10 +31,24 @@ const FolderCreate = (props) => {
     }
   };
   return (
-    <form onSubmit={handleCreateFolder}>
-      <label htmlFor="folder-name">Folder Name: </label>
-      <input type="text" name="folder_name" id="folder-name" required />
-      <button type="submit">submit</button>
+    <form onSubmit={handleCreateFolder} className="flex items-center gap-3">
+      <input
+        required
+        autoComplete="off"
+        name="folder_name"
+        placeholder="New folder name..."
+        type="text"
+        className="px-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+      />
+      <button
+        type="submit"
+        className="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+        </svg>
+        Create Folder
+      </button>
     </form>
   );
 };

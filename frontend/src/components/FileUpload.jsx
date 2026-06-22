@@ -1,23 +1,78 @@
+import { useState } from 'react';
 import api from '../services/api';
+import { FileUpload as UIFileUpload } from '@/components/application/file-upload/file-upload-base';
+
 const FileUpload = (props) => {
   const { setCurrFiles, parentFolderId } = props;
-  const handleUploadFile = async (e) => {
-    e.preventDefault();
-    const fileInput = e.target.ufile.files[0];
-    if (!fileInput) return;
-    const formData = new FormData();
-    formData.append('ufile', fileInput);
+  const [uploadingFiles, setUploadingFiles] = useState([]);
+
+  const handleUploadFiles = async (files) => {
+    if (!files || files.length === 0) return;
+
+    const fileArray = Array.from(files);
+
+    const newUploads = fileArray.map((file) => ({
+      id: Math.random().toString(36).substring(7),
+      file,
+      progress: 0,
+      failed: false,
+    }));
+
+    setUploadingFiles((prev) => [...prev, ...newUploads]);
 
     const uploadUrl = parentFolderId
       ? `/files/${parentFolderId}/upload`
       : '/files/home/upload';
-    try {
-      const response = await api.post(uploadUrl, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
 
+    // Create an array of upload promises to run concurrently
+    const uploadPromises = newUploads.map(async (uploadItem) => {
+      const formData = new FormData();
+      formData.append('ufile', uploadItem.file);
+
+      try {
+        await api.post(uploadUrl, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+          onUploadProgress: (progressEvent) => {
+            if (progressEvent.total) {
+              const percentCompleted = Math.round(
+                (progressEvent.loaded * 100) / progressEvent.total
+              );
+              setUploadingFiles((prev) =>
+                prev.map((item) =>
+                  item.id === uploadItem.id
+                    ? { ...item, progress: percentCompleted }
+                    : item
+                )
+              );
+            }
+          },
+        });
+
+        // Automatically hide the progress bar 2 seconds after completion
+        setTimeout(() => {
+          setUploadingFiles((prev) =>
+            prev.filter((item) => item.id !== uploadItem.id)
+          );
+        }, 2000);
+      } catch (error) {
+        console.error(
+          'Error uploading file:',
+          error.response?.data || error.message
+        );
+        setUploadingFiles((prev) =>
+          prev.map((item) =>
+            item.id === uploadItem.id ? { ...item, failed: true } : item
+          )
+        );
+      }
+    });
+
+    // Wait for all uploads to finish
+    await Promise.all(uploadPromises);
+
+    try {
       let fetchedFiles;
       if (parentFolderId) {
         const res = await api.get(`/folders/${parentFolderId}`);
@@ -27,21 +82,41 @@ const FileUpload = (props) => {
         fetchedFiles = res.data.contents.files;
       }
       setCurrFiles(fetchedFiles);
-      console.log(response.data);
-      e.target.reset();
-    } catch (error) {
-      console.error(
-        'Error uploading file:',
-        error.response?.data || error.message
-      );
+    } catch (e) {
+      console.error(e);
     }
   };
+
+  const removeUpload = (id) => {
+    setUploadingFiles((prev) => prev.filter((item) => item.id !== id));
+  };
+
   return (
-    <form onSubmit={handleUploadFile} style={{ marginTop: '10px' }}>
-      <label htmlFor="file-upload">Upload File: </label>
-      <input type="file" name="ufile" id="file-upload" required />
-      <button type="submit">submit</button>
-    </form>
+    <UIFileUpload.Root className="w-full">
+      <UIFileUpload.DropZone
+        allowsMultiple={true}
+        onDropFiles={handleUploadFiles}
+        hint="Drag & drop or click to upload"
+      />
+      {uploadingFiles.length > 0 && (
+        <UIFileUpload.List className="mt-4">
+          {uploadingFiles.map((item) => (
+            <UIFileUpload.ListItemProgressBar
+              key={item.id}
+              name={item.file.name}
+              size={item.file.size}
+              progress={item.progress}
+              failed={item.failed}
+              onDelete={() => removeUpload(item.id)}
+              onRetry={() => {
+                removeUpload(item.id);
+                handleUploadFiles([item.file]);
+              }}
+            />
+          ))}
+        </UIFileUpload.List>
+      )}
+    </UIFileUpload.Root>
   );
 };
 

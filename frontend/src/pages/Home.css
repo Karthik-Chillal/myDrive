@@ -31,3 +31,7 @@
     -9px -9px 33px #ffffff;
   transform: translateY(-2px);
 }
+
+button {
+  user-select: none;
+}
