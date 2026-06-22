@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import api from '../services/api';
 import FolderCreate from '../components/FolderCreate';
 import FileUpload from '../components/FileUpload';
+import LogoutButton from '../components/LogoutButton';
 import { Link } from 'react-router-dom';
 
 export const Home = () => {
@@ -92,8 +93,12 @@ export const Home = () => {
   };
 
   return (
-    <div>
-      <div>
+    <div style={{ padding: '20px', fontFamily: 'sans-serif' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', borderBottom: '1px solid #eee', paddingBottom: '15px' }}>
+        <h2 style={{ margin: 0 }}>My Drive</h2>
+        <LogoutButton />
+      </div>
+      <div style={{ display: 'flex', gap: '15px', marginBottom: '20px' }}>
         <FolderCreate
           currFolders={currFolders}
           setCurrFolders={setCurrFolders}
