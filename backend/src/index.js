@@ -6,6 +6,7 @@ import protectedRoute from './routes/protectedRoutes.js';
 import connectDB from './config/db.js';
 import { fileRouter } from './routes/fileRouter.js';
 import folderRouter from './routes/folderRouter.js';
+import cookieParser from 'cookie-parser';
 
 const app = express();
 app.use(
@@ -13,6 +14,7 @@ app.use(
     origin: 'http://localhost:5173',
   })
 );
+app.use(cookieParser());
 
 // Connect to Database
 connectDB();

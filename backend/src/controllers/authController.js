@@ -73,3 +73,28 @@ export const login = async (req, res) => {
     res.status(500).json({ error: 'Login Failed' });
   }
 };
+
+export const refresh = (req, res) => {
+  if (req.cookies?.jwt) {
+    const refreshToken = req.cookies.jwt;
+
+    jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET, (err, decoded) => {
+      if (err) {
+        return res.status(406).json({ message: 'Unauthorized' });
+      } else {
+        const accessToken = jwt.sign(
+          {
+            userId: decoded.userId,
+          },
+          process.env.JWT_ACCESS_SECRET,
+          {
+            expiresIn: '10m',
+          }
+        );
+        return res.status(200).json({ accessToken });
+      }
+    });
+  } else {
+    return res.status(406).json({ message: 'Unauthorized' });
+  }
+};

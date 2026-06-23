@@ -8,7 +8,7 @@ function verifyToken(req, res, next) {
   const token = authHeader.split(' ')[1];
   if (!token) return res.status(401).json({ error: 'Access Denied' });
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, process.env.JWT_ACCESS_SECRET);
     req.userId = decoded.userId;
     next();
   } catch (err) {
