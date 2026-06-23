@@ -17,6 +17,25 @@ _this project is yet to be deployed_
 
 The goal is to learn concepts in backend: auth, database, etc to improve my understanding of how web systems work, and understand how to build services from scratch and eventually scale it to industry standard.
 
+## Tech Stack Used:
+
+### Front-end:
+
+- ReactJS + Vite
+- React Router (Client side Routing)
+- Axios (API client) for backend api and http requests.
+- Zustand (State Management)
+- Tailwindcss (Styling)
+- ~~Jest (Testing)~~
+
+### Backend:
+
+- Auth: JWT (refresh + access) & bcrypt (Password Hashing)
+- Node.js + Express framework
+- Postman (Testing)
+- express-fileupload library for multiple file upload
+- Mongoose (Mongodb ODM)
+
 ## Key Features:
 
 #### The main features include:
@@ -28,9 +47,9 @@ The goal is to learn concepts in backend: auth, database, etc to improve my unde
 
 ## Planned Features and future goals:
 
-- Improvement in Auth - _currently uses access tokens only and saves to localStorage_
-- File Viewing natively in browser instead of downloading it.
-- Implement search feature: which will fetch the file/folder by typing the name in a searchbar.
-- Implement Sort-by feature.
-- Fetch and display the total storage used by the user.
-- Instead of storing on a computer, use AWS.
+- [x] Improvement in Auth
+- [ ] File Viewing natively in browser instead of downloading it.
+- [ ] Implement search feature: which will fetch the file/folder by typing the name in a searchbar.
+- [ ] Implement Sort-by feature.
+- [ ] Fetch and display the total storage used by the user.
+- [ ] Instead of storing on a computer, use AWS.
