@@ -2,7 +2,11 @@
 
 [Github](https://github.com/Karthik-Chillal/myDrive/)
 
-myDrive is an open-source cloud storage platform with modern user interface for seamless file storage and sharing.
+myDrive is an open-source cloud storage platform with a modern user interface for seamless file storage and sharing.
+
+### Motivation:
+
+The goal is to learn concepts in backend: auth, database, etc to improve my understanding of how web systems work, and understand how to build services from scratch and eventually scale it to industry standard.
 
 ## Installation
 
@@ -13,10 +17,6 @@ _this project is yet to be deployed_
 3. Use `npm install` to install the dependencies.
 4. Run using `npm run dev`
 
-### Motivation:
-
-The goal is to learn concepts in backend: auth, database, etc to improve my understanding of how web systems work, and understand how to build services from scratch and eventually scale it to industry standard.
-
 ## Tech Stack Used:
 
 ### Front-end:
@@ -26,7 +26,7 @@ The goal is to learn concepts in backend: auth, database, etc to improve my unde
 - Axios (API client) for backend api and http requests.
 - Zustand (State Management)
 - Tailwindcss (Styling)
-- ~~Jest (Testing)~~
+- Jest (Testing)
 
 ### Backend:
 
@@ -34,20 +34,17 @@ The goal is to learn concepts in backend: auth, database, etc to improve my unde
 - Node.js + Express framework
 - Postman (Testing)
 - express-fileupload library for multiple file upload
-- Mongoose (Mongodb ODM)
+- Mongoose (MongoDB ODM)
 
 ## Key Features:
 
 #### The main features include:
 
-- Folder creation & File upload
-- Navigate through different Folders created
-- Saves all files & folders in the backend server until deleted by user
-- Deletion & Rename operations on files and folders.
-
-## Planned Features and future goals:
-
-- [x] Improvement in Auth
+- [x] Auth using refresh token
+- [x] Folder creation & File upload
+- [x] Navigate through different Folders created
+- [x] Saves all files & folders in the backend server until deleted by user
+- [x] Deletion & Rename operations on files and folders.
 - [ ] File Viewing natively in browser instead of downloading it.
 - [ ] Implement search feature: which will fetch the file/folder by typing the name in a searchbar.
 - [ ] Implement Sort-by feature.

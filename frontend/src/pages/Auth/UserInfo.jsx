@@ -28,7 +28,7 @@ const UserInfo = () => {
         navigate('/login');
       } else {
         const response = await api.post('auth/login', { username, password });
-        setToken(response.data.token);
+        setToken(response.data.accessToken);
         navigate('/home');
       }
     } catch (error) {
@@ -105,8 +105,7 @@ const UserInfo = () => {
             </>
           ) : (
             <>
-              No account?{' '}
-              <a onClick={() => navigate('/register')}>Sign up</a>
+              No account? <a onClick={() => navigate('/register')}>Sign up</a>
             </>
           )}
         </p>

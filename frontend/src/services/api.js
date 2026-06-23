@@ -1,7 +1,10 @@
 import axios from 'axios';
 import { useAuthStore } from '../../zustand/store';
 
-const api = axios.create({ baseURL: 'http://localhost:3000' });
+const api = axios.create({
+  baseURL: 'http://localhost:3000',
+  withCredentials: true,
+});
 
 api.interceptors.request.use((config) => {
   const token = useAuthStore.getState().token;
