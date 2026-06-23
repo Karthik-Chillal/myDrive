@@ -63,7 +63,7 @@ export const login = async (req, res) => {
     res.cookie('jwt', refreshToken, {
       httpOnly: true,
       sameSite: 'None',
-      // secure: true, // secure is needed for https
+      secure: process.env.NODE_ENV === 'production', // true for https in production
       maxAge: 30 * 24 * 60 * 60 * 1000,
     });
 
