@@ -1,0 +1,36 @@
+# myDrive : File Storage service
+
+[Github](https://github.com/Karthik-Chillal/myDrive/)
+
+myDrive is an open-source cloud storage platform with modern user interface for seamless file storage and sharing.
+
+## Installation
+
+_this project is yet to be deployed_
+
+1. Run `git clone git@github.com:Karthik-Chillal/myDrive.git` in the terminal.
+2. then `cd myDrive`
+3. Use `npm install` to install the dependencies.
+4. Run using `npm run dev`
+
+### Motivation:
+
+The goal is to learn concepts in backend: auth, database, etc to improve my understanding of how web systems work, and understand how to build services from scratch and eventually scale it to industry standard.
+
+## Key Features:
+
+#### The main features include:
+
+- Folder creation & File upload
+- Navigate through different Folders created
+- Saves all files & folders in the backend server until deleted by user
+- Deletion & Rename operations on files and folders.
+
+## Planned Features and future goals:
+
+- Improvement in Auth - _currently uses access tokens only and saves to localStorage_
+- File Viewing natively in browser instead of downloading it.
+- Implement search feature: which will fetch the file/folder by typing the name in a searchbar.
+- Implement Sort-by feature.
+- Fetch and display the total storage used by the user.
+- Instead of storing on a computer, use AWS.
