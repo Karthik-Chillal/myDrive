@@ -40,13 +40,19 @@ _this project is yet to be deployed_
 
 #### The main features include:
 
-- [x] Auth using refresh token
+- [x] Authentication & Authorization using refresh token
 - [x] Folder creation & File upload
 - [x] Navigate through different Folders created
 - [x] Saves all files & folders in the backend server until deleted by user
 - [x] Deletion & Rename operations on files and folders.
-- [ ] File Viewing natively in browser instead of downloading it.
-- [ ] Implement search feature: which will fetch the file/folder by typing the name in a searchbar.
-- [ ] Implement Sort-by feature.
+- [x] File Viewing natively in browser instead of downloading it.
+- [ ] Pagination.
 - [ ] Fetch and display the total storage used by the user.
+- [ ] Implement search feature: which will fetch the file/folder by typing the name in a searchbar.
+- [ ] Add option to share files with others.
+- [ ] Implement Rate Limiting.
+- [ ] Implement Sort-by feature.
+- [ ] use GraphQL
+- [ ] use caching for optimisation using Redis.
 - [ ] Instead of storing on a computer, use AWS.
+- [ ] Websocket for live collaboration viewing/processing status/real-time comments.

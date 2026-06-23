@@ -1,5 +1,4 @@
 import Files from '../models/Files.js';
-import fs from 'node:fs';
 import path from 'node:path';
 import { unlink } from 'node:fs';
 import Folders from '../models/Folders.js';
