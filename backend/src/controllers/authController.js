@@ -45,11 +45,29 @@ export const login = async (req, res) => {
       return res.status(401).json({ error: 'Wrong Password' });
     }
 
-    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
-      expiresIn: '1h', // Increased to 1h for better usability
+    const accessToken = jwt.sign(
+      { userId: user._id },
+      process.env.JWT_ACCESS_SECRET,
+      {
+        expiresIn: '10m', // Increased to 1h for better usability
+      }
+    );
+
+    // creating refresh Token so that auth is persisted for a longer time,
+    // and is safer than increasing expriresIn
+    const refreshToken = jwt.sign(
+      { userId: user._id },
+      process.env.JWT_REFRESH_SECRET,
+      { expiresIn: '30d' }
+    );
+    res.cookie('jwt', refreshToken, {
+      httpOnly: true,
+      sameSite: 'None',
+      // secure: true, // secure is needed for https
+      maxAge: 30 * 24 * 60 * 60 * 1000,
     });
 
-    res.status(201).json({ token });
+    res.status(201).json({ accessToken });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Login Failed' });
