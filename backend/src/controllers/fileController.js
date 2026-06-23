@@ -1,6 +1,7 @@
 import Files from '../models/Files.js';
 import path from 'node:path';
 import { unlink } from 'node:fs';
+import { mkdir } from 'node:fs/promises';
 import Folders from '../models/Folders.js';
 
 export const uploadFile = async (req, res) => {
@@ -27,6 +28,9 @@ export const uploadFile = async (req, res) => {
       }
       parentFolderId = homeFolder._id;
     }
+
+    const uploadsDir = path.join(process.cwd(), 'uploads');
+    await mkdir(uploadsDir, { recursive: true });
 
     const savedFiles = [];
 
