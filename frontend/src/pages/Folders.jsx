@@ -108,6 +108,7 @@ const Folders = () => {
       const response = await api.get(`/files/${id}/view`, {
         responseType: 'blob',
       });
+      console.log(response.data);
       const fileUrl = window.URL.createObjectURL(
         new Blob([response.data], { type: response.headers['content-type'] })
       );

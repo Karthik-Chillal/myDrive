@@ -1,4 +1,5 @@
 import Files from '../models/Files.js';
+import fs from 'node:fs';
 import path from 'node:path';
 import { unlink } from 'node:fs';
 import Folders from '../models/Folders.js';
@@ -40,14 +41,17 @@ export const uploadFile = async (req, res) => {
         mimetype: file.mimetype,
       });
 
+      // Determine file extension from original filename
+      const ext = path.extname(file.name) || '';
       const server_path = path.join(
         process.cwd(),
         'uploads',
-        new_file._id.toString()
+        `${new_file._id}${ext}`
       );
 
       new_file.server_path = server_path;
       await new_file.save();
+      // Move the uploaded file to the new path (with extension)
       await file.mv(new_file.server_path);
 
       savedFiles.push(new_file);
@@ -104,11 +108,18 @@ export const viewFile = async (req, res) => {
     if (!file) {
       return res.status(404).json({ error: 'file not found' });
     }
-    res.setHeader(
-      'Content-Disposition',
-      `inline; filename="${file.file.file_name}"`
-    );
-    res.sendFile(file.server_path);
+    console.log('Viewing file:', {
+      id: req.params.id,
+      path: file.server_path,
+      mime: file.mimetype,
+    });
+    // Use sendFile with explicit headers; file now includes extension so Express infers MIME type correctly
+    res.sendFile(file.server_path, {
+      headers: {
+        'Content-Type': file.mimetype || 'application/octet-stream',
+        'Content-Disposition': `inline; filename="${file.file_name}"`,
+      },
+    });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
