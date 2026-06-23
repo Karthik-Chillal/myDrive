@@ -9,8 +9,8 @@ export const uploadFile = async (req, res) => {
       return res.status(400).json({ message: 'No files uploaded.' });
     }
 
-    const uploadedFiles = Array.isArray(req.files.ufile) 
-      ? req.files.ufile 
+    const uploadedFiles = Array.isArray(req.files.ufile)
+      ? req.files.ufile
       : [req.files.ufile];
 
     const uploadFilePath = req.url;
@@ -39,17 +39,17 @@ export const uploadFile = async (req, res) => {
         size: file.size,
         mimetype: file.mimetype,
       });
-      
+
       const server_path = path.join(
         process.cwd(),
         'uploads',
         new_file._id.toString()
       );
-      
+
       new_file.server_path = server_path;
       await new_file.save();
       await file.mv(new_file.server_path);
-      
+
       savedFiles.push(new_file);
     }
 
@@ -92,5 +92,24 @@ export const downloadFile = async (req, res) => {
     return res.download(file.server_path, file.file_name);
   } catch (err) {
     return res.status(500).json({ error: err.message });
+  }
+};
+
+export const viewFile = async (req, res) => {
+  try {
+    const file = await Files.findOne({
+      _id: req.params.id,
+      user: req.userId,
+    });
+    if (!file) {
+      return res.status(404).json({ error: 'file not found' });
+    }
+    res.setHeader(
+      'Content-Disposition',
+      `inline; filename="${file.originalName}"`
+    );
+    res.sendFile(file.server_path);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
 };

@@ -3,6 +3,7 @@ import {
   deleteFile,
   uploadFile,
   downloadFile,
+  viewFile,
 } from '../controllers/fileController.js';
 import verifyToken from '../middleware/authMiddleware.js';
 import fileUpload from 'express-fileupload';
@@ -15,4 +16,5 @@ fileRouter.post(
 );
 fileRouter.delete('/:id/delete', verifyToken, deleteFile);
 fileRouter.get('/:id/download', verifyToken, downloadFile);
+fileRouter.get('/:id/view', verifyToken, viewFile);
 export { fileRouter };

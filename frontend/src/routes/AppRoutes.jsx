@@ -1,6 +1,5 @@
 import { Routes, Route } from 'react-router-dom';
 
-import { Home } from '../pages/Home';
 import Folders from '../pages/Folders';
 import UserInfo from '../pages/Auth/UserInfo.jsx';
 import Layout from '../components/Layout';
@@ -15,7 +14,7 @@ const AppRoutes = () => {
         path="/home"
         element={
           <Layout>
-            <Home></Home>
+            <Folders></Folders>
           </Layout>
         }
       ></Route>
