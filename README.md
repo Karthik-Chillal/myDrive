@@ -10,7 +10,7 @@ The goal is to learn concepts in backend: auth, database, etc to improve my unde
 
 ## Installation
 
-_this project is yet to be deployed_
+Demo Live: https://mydrive-qrso264bt-karthik-chillal.vercel.app/home
 
 1. Run `git clone git@github.com:Karthik-Chillal/myDrive.git` in the terminal.
 2. then `cd myDrive`
