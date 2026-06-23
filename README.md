@@ -52,7 +52,7 @@ _this project is yet to be deployed_
 - [ ] Add option to share files with others.
 - [ ] Implement Rate Limiting.
 - [ ] Implement Sort-by feature.
-- [ ] use GraphQL
 - [ ] use caching for optimisation using Redis.
+- [ ] use GraphQL
 - [ ] Instead of storing on a computer, use AWS.
 - [ ] Websocket for live collaboration viewing/processing status/real-time comments.

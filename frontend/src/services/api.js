@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useAuthStore } from '../../zustand/store';
 
 const api = axios.create({
-  baseURL: 'http://localhost:3000',
+  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:3000',
   withCredentials: true,
 });
 
@@ -31,7 +31,7 @@ api.interceptors.response.use(
 
       try {
         const response = await axios.post(
-          'http://localhost:3000/auth/refresh',
+          `${import.meta.env.VITE_API_URL || 'http://localhost:3000'}/auth/refresh`,
           {},
           { withCredentials: true }
         );
