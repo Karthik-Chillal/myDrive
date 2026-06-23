@@ -34,7 +34,7 @@ Demo Live: https://mydrive-qrso264bt-karthik-chillal.vercel.app/home
 - Node.js + Express framework
 - Postman (Testing)
 - express-fileupload library for multiple file upload
-- Mongoose (MongoDB ODM)
+- Atlas Mongoose (MongoDB ODM)
 
 ## Key Features:
 
