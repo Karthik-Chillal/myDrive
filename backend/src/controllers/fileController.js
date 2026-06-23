@@ -106,7 +106,7 @@ export const viewFile = async (req, res) => {
     }
     res.setHeader(
       'Content-Disposition',
-      `inline; filename="${file.originalName}"`
+      `inline; filename="${file.file.file_name}"`
     );
     res.sendFile(file.server_path);
   } catch (error) {

@@ -1,4 +1,9 @@
-const FileList = ({ files, handleDownloadFile, handleDeleteFile }) => {
+const FileList = ({
+  files,
+  handleDownloadFile,
+  handleDeleteFile,
+  handleViewFile,
+}) => {
   return (
     <div>
       <h3 className="text-xl font-semibold text-gray-800 mb-4">Files</h3>
@@ -23,12 +28,13 @@ const FileList = ({ files, handleDownloadFile, handleDeleteFile }) => {
                     d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"
                   />
                 </svg>
-                <span
-                  className="font-medium text-gray-700 truncate"
+                <button
+                  className="font-medium text-gray-700 truncate hover:text-blue-600 focus:outline-none bg-transparent border-none p-0 cursor-pointer text-left"
                   title={file.file_name}
+                  onClick={() => handleViewFile(file._id)}
                 >
                   {file.file_name}
-                </span>
+                </button>
               </div>
               <div className="flex justify-end gap-2 mt-auto">
                 <button

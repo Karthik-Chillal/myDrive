@@ -16,16 +16,53 @@ api.interceptors.request.use((config) => {
 
 api.interceptors.response.use(
   (response) => response,
-  (error) => {
+  async (error) => {
+    const originalRequest = error.config;
+
     if (
       error.response?.status === 401 &&
-      !error.config?.url?.includes('login') &&
-      !error.config?.url?.includes('register')
+      originalRequest &&
+      !originalRequest._retry &&
+      !originalRequest.url?.includes('login') &&
+      !originalRequest.url?.includes('register') &&
+      !originalRequest.url?.includes('refresh')
+    ) {
+      originalRequest._retry = true;
+
+      try {
+        const response = await axios.post(
+          'http://localhost:3000/auth/refresh',
+          {},
+          { withCredentials: true }
+        );
+
+        const newAccessToken = response.data.accessToken;
+        
+        useAuthStore.getState().setToken(newAccessToken);
+        
+        originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+        
+        return api(originalRequest);
+      } catch (refreshError) {
+        useAuthStore.getState().clearToken();
+        localStorage.removeItem('auth-store');
+        window.location.href = '/login';
+        return Promise.reject(refreshError);
+      }
+    }
+
+    // Fallback: if it's 401 and it's already a retry or refresh failed previously
+    if (
+      error.response?.status === 401 &&
+      !originalRequest.url?.includes('login') &&
+      !originalRequest.url?.includes('register') &&
+      !originalRequest.url?.includes('refresh')
     ) {
       useAuthStore.getState().clearToken();
       localStorage.removeItem('auth-store');
       window.location.href = '/login';
     }
+
     return Promise.reject(error);
   }
 );

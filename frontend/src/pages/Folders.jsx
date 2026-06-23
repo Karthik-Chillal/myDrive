@@ -1,4 +1,4 @@
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import api from '../services/api';
 import FolderCreate from '../components/FolderCreate';
 import FileUpload from '../components/FileUpload';
@@ -12,7 +12,6 @@ const Folders = () => {
   const [files, setFiles] = useState([]);
   const [showActions, setShowActions] = useState(false);
   const { folderId } = useParams();
-  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchFolders = async () => {
@@ -104,6 +103,23 @@ const Folders = () => {
     }
   };
 
+  const handleViewFile = async (id) => {
+    try {
+      const response = await api.get(`/files/${id}/view`, {
+        responseType: 'blob',
+      });
+      const fileUrl = window.URL.createObjectURL(
+        new Blob([response.data], { type: response.headers['content-type'] })
+      );
+      window.open(fileUrl, '_blank');
+    } catch (error) {
+      console.error(
+        'Error viewing file:',
+        error.response?.data || error.message
+      );
+    }
+  };
+
   return (
     <div className="flex flex-col gap-8 w-full max-w-7xl mx-auto">
       <div className="flex justify-between items-center w-full relative z-50">
@@ -156,6 +172,7 @@ const Folders = () => {
         files={files}
         handleDownloadFile={handleDownloadFile}
         handleDeleteFile={handleDeleteFile}
+        handleViewFile={handleViewFile}
       />
     </div>
   );
