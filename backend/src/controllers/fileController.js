@@ -75,11 +75,19 @@ export const deleteFile = async (req, res) => {
       user: req.userId,
       _id: req.params.id,
     });
+    if (!file) {
+      return res.status(404).json({ error: 'File not found' });
+    }
     console.log(file.server_path);
-    unlink(file.server_path, (err) => {
-      if (err) throw err;
-      console.log('delete operatoin successful');
-    });
+    if (file.server_path) {
+      unlink(file.server_path, (err) => {
+        if (err) {
+          console.error('Error deleting file from disk:', err);
+        } else {
+          console.log('delete operatoin successful');
+        }
+      });
+    }
     await file.deleteOne();
     return res.status(200).json({ message: 'deletion successful' });
   } catch (err) {
