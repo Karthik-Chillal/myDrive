@@ -103,7 +103,7 @@ const UserInfo = () => {
           </span>
         </div>
 
-        {err && <LoginError err={err}></LoginError>}
+        {err && <LoginError err={err} setErr={setErr}></LoginError>}
         <button className="submit" type="submit">
           {isRegister ? 'Sign up' : 'Log in'}
         </button>

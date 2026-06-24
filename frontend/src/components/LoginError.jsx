@@ -1,11 +1,15 @@
 const LoginError = (props) => {
-  const { err } = props;
+  const { err, setErr } = props;
+  const handleCancel = () => {
+    setErr(null);
+  };
   return (
     <div className="relative w-full flex flex-wrap items-center justify-center py-3 pl-4 pr-14 rounded-lg text-base font-medium [transition:all_0.5s_ease] border-solid border border-[#f85149] text-[#b22b2b] [&_svg]:text-[#b22b2b] group bg-[linear-gradient(#f851491a,#f851491a)]">
-      {/* <button
+      <button
         type="button"
         aria-label="close-error"
         className="absolute right-4 p-1 rounded-md transition-opacity text-[#f85149] border border-[#f85149] opacity-40 hover:opacity-100"
+        onClick={handleCancel}
       >
         <svg
           stroke="currentColor"
@@ -22,7 +26,7 @@ const LoginError = (props) => {
           <path d="M18 6 6 18" />
           <path d="m6 6 12 12" />
         </svg>
-      </button> */}
+      </button>
       <p className="flex flex-row items-center mr-auto gap-x-2">
         <svg
           stroke="currentColor"
