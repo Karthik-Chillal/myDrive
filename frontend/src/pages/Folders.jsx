@@ -148,7 +148,7 @@ const Folders = () => {
           </button>
 
           {showActions && (
-            <div className="absolute top-12 right-0 w-[500px] max-w-[90vw] flex flex-col justify-center items-center gap-4 bg-white p-4 rounded-xl shadow-2xl border border-gray-200 transition-all animate-in fade-in zoom-in-95 duration-200">
+            <div className="absolute top-12 right-0 w-125 max-w-[90vw] flex flex-col justify-center items-center gap-4 bg-white p-4 rounded-xl shadow-2xl border border-gray-200 transition-all animate-in fade-in zoom-in-95 duration-200">
               <FolderCreate
                 setCurrFolders={setFolders}
                 currFolders={folders}

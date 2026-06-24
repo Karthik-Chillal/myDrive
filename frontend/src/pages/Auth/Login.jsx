@@ -6,6 +6,7 @@ const Login = () => {
   const navigate = useNavigate();
   const token = useAuthStore((state) => state.token);
   const login = useAuthStore((state) => state.setToken);
+  const [err, setErr] = useState('none');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   useEffect(() => {

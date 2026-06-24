@@ -3,6 +3,7 @@ import { useAuthStore } from '../../../zustand/store';
 import { useEffect, useState } from 'react';
 import api from '../../services/api';
 import { useNavigate, useLocation } from 'react-router-dom';
+import LoginError from '@/components/LoginError';
 
 const UserInfo = () => {
   const navigate = useNavigate();
@@ -11,7 +12,7 @@ const UserInfo = () => {
   const setToken = useAuthStore((state) => state.setToken);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-
+  const [err, setErr] = useState(null);
   const isRegister = location.pathname === '/register';
 
   useEffect(() => {
@@ -21,6 +22,7 @@ const UserInfo = () => {
   }, [token, navigate]);
 
   const handleSubmit = async (e) => {
+    setErr(null);
     e.preventDefault();
     try {
       if (isRegister) {
@@ -33,6 +35,12 @@ const UserInfo = () => {
       }
     } catch (error) {
       console.log(error.response?.data);
+      setErr(
+        error.response?.data?.message ||
+          error.response?.data.error ||
+          error.message,
+        'Something went wong'
+      );
     }
   };
 
@@ -94,6 +102,8 @@ const UserInfo = () => {
             </svg>
           </span>
         </div>
+
+        {err && <LoginError err={err}></LoginError>}
         <button className="submit" type="submit">
           {isRegister ? 'Sign up' : 'Log in'}
         </button>

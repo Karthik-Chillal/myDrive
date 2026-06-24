@@ -55,3 +55,4 @@ Demo Live: https://mydrive-qrso264bt-karthik-chillal.vercel.app/home
 - [ ] use caching for optimisation using Redis.
 - [ ] Instead of storing on a computer, use AWS.
 - [ ] Websocket for live collaboration viewing/processing status/real-time comments.
+- [ ] Make website responsive.
