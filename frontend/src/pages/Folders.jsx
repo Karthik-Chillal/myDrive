@@ -4,10 +4,12 @@ import FolderCreate from '../components/FolderCreate';
 import FileUpload from '../components/FileUpload';
 import { useEffect, useState } from 'react';
 import BackButton from '../components/BackButton';
+import { useLoadingStore } from '../../zustand/store';
 import FolderList from '../components/FolderList';
 import FileList from '../components/FileList';
 
 const Folders = () => {
+  const { setLoading } = useLoadingStore();
   const [folders, setFolders] = useState([]);
   const [files, setFiles] = useState([]);
   const [showActions, setShowActions] = useState(false);
@@ -15,6 +17,7 @@ const Folders = () => {
 
   useEffect(() => {
     const fetchFolders = async () => {
+      setLoading(true);
       // If folderId exists, fetch specific folder, else fetch root folders
       const link = folderId ? `/folders/${folderId}` : '/folders';
       try {
@@ -36,13 +39,16 @@ const Folders = () => {
           'Error fetching: ',
           error.response?.data || error.message
         );
+      } finally {
+        setLoading(false);
       }
     };
     fetchFolders();
-  }, [folderId]);
+  }, [folderId, setLoading]);
 
   const handleDelete = async (id) => {
     if (!window.confirm('Are you sure you want to delete this folder?')) return;
+    setLoading(true);
     try {
       await api.delete(`/folders/${id}/delete`);
       setFolders((prev) => prev.filter((f) => f._id !== id));
@@ -51,12 +57,15 @@ const Folders = () => {
         'Error deleting folder:',
         error.response?.data || error.message
       );
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleRename = async (id, currentName) => {
     const newName = window.prompt('Enter new folder name:', currentName);
     if (!newName || newName.trim() === '' || newName === currentName) return;
+    setLoading(true);
     try {
       await api.put(`/folders/${id}/rename`, { folder_name: newName });
       setFolders((prev) =>
@@ -67,11 +76,14 @@ const Folders = () => {
         'Error renaming folder:',
         error.response?.data || error.message
       );
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleDeleteFile = async (id) => {
     if (!window.confirm('Are you sure you want to delete this file?')) return;
+    setLoading(true);
     try {
       await api.delete(`/files/${id}/delete`);
       setFiles((prev) => prev.filter((f) => f._id !== id));
@@ -80,10 +92,13 @@ const Folders = () => {
         'Error deleting file:',
         error.response?.data || error.message
       );
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleDownloadFile = async (id, filename) => {
+    setLoading(true);
     try {
       const response = await api.get(`/files/${id}/download`, {
         responseType: 'blob',
@@ -100,10 +115,13 @@ const Folders = () => {
         'Error downloading file:',
         error.response?.data || error.message
       );
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleViewFile = async (id) => {
+    setLoading(true);
     try {
       const response = await api.get(`/files/${id}/view`, {
         responseType: 'blob',
@@ -118,6 +136,8 @@ const Folders = () => {
         'Error viewing file:',
         error.response?.data || error.message
       );
+    } finally {
+      setLoading(false);
     }
   };
 

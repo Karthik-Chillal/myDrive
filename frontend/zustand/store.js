@@ -14,9 +14,7 @@ export const useAuthStore = create(
   )
 );
 
-export const useFoldersStore = create((set) => {
-  return {
-    folders: [],
-    setFolders: (foldersList) => set({ folders: foldersList }),
-  };
-});
+export const useLoadingStore = create((set) => ({
+  loading: false,
+  setLoading: (state) => set({ loading: state }),
+}));

@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import api from '../../services/api';
 import { useNavigate, useLocation } from 'react-router-dom';
 import LoginError from '@/components/LoginError';
+import Loader from '@/components/Loader';
 
 const UserInfo = () => {
   const navigate = useNavigate();
@@ -14,7 +15,7 @@ const UserInfo = () => {
   const [password, setPassword] = useState('');
   const [err, setErr] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
-
+  const [loading, setLoading] = useState(false);
   const isRegister = location.pathname === '/register';
 
   useEffect(() => {
@@ -26,6 +27,7 @@ const UserInfo = () => {
   const handleSubmit = async (e) => {
     setErr(null);
     e.preventDefault();
+    setLoading(true);
     try {
       if (isRegister) {
         await api.post('/auth/register', { username, password });
@@ -43,10 +45,18 @@ const UserInfo = () => {
           error.message,
         'Something went wong'
       );
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
+    <>
+      {loading && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
+          <Loader />
+        </div>
+      )}
     <div className="login-wrapper">
       <form className="form" onSubmit={handleSubmit}>
         <p className="form-title">
@@ -125,6 +135,7 @@ const UserInfo = () => {
         </p>
       </form>
     </div>
+    </>
   );
 };
 

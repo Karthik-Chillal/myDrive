@@ -46,6 +46,7 @@ Demo Live: https://mydrive-qrso264bt-karthik-chillal.vercel.app/home
 - [x] Saves all files & folders in the backend server until deleted by user
 - [x] Deletion & Rename operations on files and folders.
 - [x] File Viewing natively in browser instead of downloading it.
+- [ ] Switch to fs module & stream/buffer for handling large file size.
 - [ ] Pagination.
 - [ ] Fetch and display the total storage used by the user.
 - [ ] Implement search feature: which will fetch the file/folder by typing the name in a searchbar.
