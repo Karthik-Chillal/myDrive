@@ -50,7 +50,7 @@ Demo Live: https://mydrive-qrso264bt-karthik-chillal.vercel.app/home
 - [ ] Fetch and display the total storage used by the user.
 - [ ] Implement search feature: which will fetch the file/folder by typing the name in a searchbar.
 - [ ] Add option to share files with others.
-- [ ] Implement Rate Limiting.
+- [ ] Implement Rate Limiting & Sanitization of inputs.
 - [ ] Implement Sort-by feature.
 - [ ] use caching for optimisation using Redis.
 - [ ] Instead of storing on a computer, use AWS.

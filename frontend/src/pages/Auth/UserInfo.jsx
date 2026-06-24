@@ -13,6 +13,8 @@ const UserInfo = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [err, setErr] = useState(null);
+  const [showPassword, setShowPassword] = useState(false);
+
   const isRegister = location.pathname === '/register';
 
   useEffect(() => {
@@ -76,12 +78,14 @@ const UserInfo = () => {
         <div className="input-container">
           <input
             placeholder="Enter password"
-            type="password"
+            type={showPassword ? 'text' : 'password'}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
           <span>
             <svg
+              className="cursor-pointer"
+              onClick={() => setShowPassword((prev) => !prev)}
               stroke="currentColor"
               viewBox="0 0 24 24"
               fill="none"
