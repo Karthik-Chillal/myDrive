@@ -41,7 +41,7 @@ Demo Live: https://mydrive-qrso264bt-karthik-chillal.vercel.app/home
 
 ## Key Features:
 
-#### The main features include:
+#### The main features & goals include:
 
 - [x] Authentication & Authorization using refresh token
 - [x] Folder creation & File upload
