@@ -29,7 +29,7 @@ Demo Live: https://mydrive-qrso264bt-karthik-chillal.vercel.app/home
 - Axios (API client) for backend api and http requests.
 - Zustand (State Management)
 - Tailwindcss (Styling)
-- Jest (Testing)
+- ~~Jest (Testing)~~
 
 ### Backend:
 
