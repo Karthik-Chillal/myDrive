@@ -100,17 +100,12 @@ const Folders = () => {
   const handleDownloadFile = async (id, filename) => {
     setLoading(true);
     try {
-      const response = await api.get(`/files/${id}/download`, {
-        responseType: 'blob',
-      });
-      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const response = await api.get(`/files/${id}/download`);
       const link = document.createElement('a');
-      link.href = url;
-      link.setAttribute('download', filename);
+      link.href = response.data.url;
       document.body.appendChild(link);
       link.click();
       link.remove();
-      window.URL.revokeObjectURL(url); // Free the memory!
     } catch (error) {
       console.error(
         'Error downloading file:',
@@ -124,16 +119,8 @@ const Folders = () => {
   const handleViewFile = async (id) => {
     setLoading(true);
     try {
-      const response = await api.get(`/files/${id}/view`, {
-        responseType: 'blob',
-      });
-      console.log(response.data);
-      const fileUrl = window.URL.createObjectURL(
-        new Blob([response.data], { type: response.headers['content-type'] })
-      );
-      window.open(fileUrl, '_blank');
-      // Free the memory after a short delay to ensure the new tab had time to load it
-      setTimeout(() => window.URL.revokeObjectURL(fileUrl), 1000);
+      const response = await api.get(`/files/${id}/view`);
+      window.open(response.data.url, '_blank');
     } catch (error) {
       console.error(
         'Error viewing file:',

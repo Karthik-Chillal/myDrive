@@ -3,6 +3,7 @@ import path from 'node:path';
 import { unlink } from 'node:fs';
 import { mkdir } from 'node:fs/promises';
 import Folders from '../models/Folders.js';
+import supabase from '../config/supabase.js';
 
 export const uploadFile = async (req, res) => {
   try {
@@ -16,11 +17,6 @@ export const uploadFile = async (req, res) => {
 
     const uploadFilePath = req.url;
     console.log(uploadFilePath);
-
-    const { error } = await supabase.storage
-      .from('myDrive')
-      .upload(uploadFilePath);
-
     let parentFolderId = req.params.id;
     if (parentFolderId === 'home') {
       const homeFolder = await Folders.findOne({
@@ -50,17 +46,16 @@ export const uploadFile = async (req, res) => {
 
       // Determine file extension from original filename
       const ext = path.extname(file.name) || '';
-      const server_path = path.join(
-        process.cwd(),
-        'uploads',
-        `${new_file._id}${ext}`
-      );
+      const storagePath = `users/${req.userId}/${new_file._id}${ext}`;
+      const { data, error } = await supabase.storage
+        .from('myDrive')
+        .upload(storagePath, file.data, {
+          contentType: file.mimetype,
+          upsert: false,
+        });
 
-      new_file.server_path = server_path;
+      new_file.server_path = storagePath;
       await new_file.save();
-      // Move the uploaded file to the new path (with extension)
-      await file.mv(new_file.server_path);
-
       savedFiles.push(new_file);
     }
 
@@ -84,13 +79,9 @@ export const deleteFile = async (req, res) => {
     }
     console.log(file.server_path);
     if (file.server_path) {
-      unlink(file.server_path, (err) => {
-        if (err) {
-          console.error('Error deleting file from disk:', err);
-        } else {
-          console.log('delete operatoin successful');
-        }
-      });
+      const { data, error } = await supabase.storage
+        .from('myDrive')
+        .remove([file.server_path]);
     }
     await file.deleteOne();
     return res.status(200).json({ message: 'deletion successful' });
@@ -108,7 +99,16 @@ export const downloadFile = async (req, res) => {
     if (!file) {
       return res.status(404).json({ error: 'File not found' });
     }
-    return res.download(file.server_path, file.file_name);
+    
+    const { data, error } = await supabase.storage
+      .from('myDrive')
+      .createSignedUrl(file.server_path, 60, {
+        download: file.file_name
+      });
+      
+    if (error) throw error;
+    
+    return res.status(200).json({ url: data.signedUrl });
   } catch (err) {
     return res.status(500).json({ error: err.message });
   }
@@ -123,18 +123,14 @@ export const viewFile = async (req, res) => {
     if (!file) {
       return res.status(404).json({ error: 'file not found' });
     }
-    console.log('Viewing file:', {
-      id: req.params.id,
-      path: file.server_path,
-      mime: file.mimetype,
-    });
-    // Use sendFile with explicit headers; file now includes extension so Express infers MIME type correctly
-    res.sendFile(file.server_path, {
-      headers: {
-        'Content-Type': file.mimetype || 'application/octet-stream',
-        'Content-Disposition': `inline; filename="${file.file_name}"`,
-      },
-    });
+    
+    const { data, error } = await supabase.storage
+      .from('myDrive')
+      .createSignedUrl(file.server_path, 60);
+      
+    if (error) throw error;
+    
+    return res.status(200).json({ url: data.signedUrl });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
