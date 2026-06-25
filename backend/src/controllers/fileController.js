@@ -99,15 +99,15 @@ export const downloadFile = async (req, res) => {
     if (!file) {
       return res.status(404).json({ error: 'File not found' });
     }
-    
+
     const { data, error } = await supabase.storage
       .from('myDrive')
       .createSignedUrl(file.server_path, 60, {
-        download: file.file_name
+        download: file.file_name,
       });
-      
+
     if (error) throw error;
-    
+
     return res.status(200).json({ url: data.signedUrl });
   } catch (err) {
     return res.status(500).json({ error: err.message });
@@ -123,13 +123,13 @@ export const viewFile = async (req, res) => {
     if (!file) {
       return res.status(404).json({ error: 'file not found' });
     }
-    
+
     const { data, error } = await supabase.storage
       .from('myDrive')
-      .createSignedUrl(file.server_path, 60);
-      
+      .createSignedUrl(file.server_path, 600);
+
     if (error) throw error;
-    
+
     return res.status(200).json({ url: data.signedUrl });
   } catch (error) {
     res.status(500).json({ error: error.message });

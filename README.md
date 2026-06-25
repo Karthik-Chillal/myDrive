@@ -49,6 +49,7 @@ Demo Live: https://mydrive-qrso264bt-karthik-chillal.vercel.app/home
 - [x] Saves all files & folders in the backend server until deleted by user
 - [x] Deletion & Rename operations on files and folders.
 - [x] File Viewing natively in browser instead of downloading it.
+- [x] Instead of storing on a computer, use ~~AWS~~ `Supabase Storage`.
 - [ ] Switch to fs module & stream/buffer for handling large file size.
 - [ ] Pagination.
 - [ ] Fetch and display the total storage used by the user.
@@ -57,6 +58,5 @@ Demo Live: https://mydrive-qrso264bt-karthik-chillal.vercel.app/home
 - [ ] Implement Rate Limiting & Sanitization of inputs.
 - [ ] Implement Sort-by feature.
 - [ ] use caching for optimisation using Redis.
-- [ ] Instead of storing on a computer, use AWS.
 - [ ] Websocket for live collaboration viewing/processing status/real-time comments.
 - [ ] Make website responsive.
