@@ -12,6 +12,9 @@ The goal is to learn concepts in backend: auth, database, etc to improve my unde
 
 Demo Live: https://mydrive-qrso264bt-karthik-chillal.vercel.app/home
 
+> [!WARNING]
+> This project is running on free version of render, so login may take upto a minute.
+
 1. Run `git clone git@github.com:Karthik-Chillal/myDrive.git` in the terminal.
 2. then `cd myDrive`
 3. Use `npm install` to install the dependencies.

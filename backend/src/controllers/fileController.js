@@ -17,6 +17,10 @@ export const uploadFile = async (req, res) => {
     const uploadFilePath = req.url;
     console.log(uploadFilePath);
 
+    const { error } = await supabase.storage
+      .from('myDrive')
+      .upload(uploadFilePath);
+
     let parentFolderId = req.params.id;
     if (parentFolderId === 'home') {
       const homeFolder = await Folders.findOne({

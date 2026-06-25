@@ -110,6 +110,7 @@ const Folders = () => {
       document.body.appendChild(link);
       link.click();
       link.remove();
+      window.URL.revokeObjectURL(url); // Free the memory!
     } catch (error) {
       console.error(
         'Error downloading file:',
@@ -131,6 +132,8 @@ const Folders = () => {
         new Blob([response.data], { type: response.headers['content-type'] })
       );
       window.open(fileUrl, '_blank');
+      // Free the memory after a short delay to ensure the new tab had time to load it
+      setTimeout(() => window.URL.revokeObjectURL(fileUrl), 1000);
     } catch (error) {
       console.error(
         'Error viewing file:',
