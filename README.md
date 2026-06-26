@@ -8,6 +8,12 @@ myDrive is an open-source cloud storage platform with a modern user interface fo
 
 The goal is to learn concepts in backend: auth, database, etc to improve my understanding of how web systems work, and understand how to build services from scratch and eventually scale it to industry standard.
 
+# HOME PAGE
+
+<p align="center">
+  <img src="assets/home.png" width="900">
+</p>
+
 ## Installation
 
 Demo Live: https://mydrive-qrso264bt-karthik-chillal.vercel.app/home
