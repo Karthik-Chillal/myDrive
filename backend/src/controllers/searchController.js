@@ -1,10 +1,11 @@
 import Folders from '../models/Folders.js';
 import Files from '../models/Files.js';
+import 'dotenv/config';
 
 export const search = async (req, res) => {
   try {
     const { search } = req.query;
-    const { folderId } = req.params;
+    let { folderId } = req.params;
 
     if (!search) {
       return res.status(400).json({
@@ -14,7 +15,6 @@ export const search = async (req, res) => {
 
     const query = search.trim().toLowerCase();
 
-    // Fetch all folders and files belonging to the user
     const folders = await Folders.find({
       user: req.userId,
     });
@@ -23,14 +23,12 @@ export const search = async (req, res) => {
       user: req.userId,
     });
 
-    // folderId -> folder
     const folderMap = new Map();
 
     for (const folder of folders) {
       folderMap.set(folder._id.toString(), folder);
     }
 
-    // parentFolderId -> child folders
     const childrenMap = new Map();
 
     for (const folder of folders) {
@@ -45,7 +43,6 @@ export const search = async (req, res) => {
       childrenMap.get(parentId).push(folder);
     }
 
-    // folderId -> files
     const fileMap = new Map();
 
     for (const file of files) {
@@ -93,6 +90,14 @@ export const search = async (req, res) => {
       for (const child of children) {
         dfs(child._id.toString());
       }
+    }
+
+    if (folderId === 'home') {
+      const homeFolder = folders.find((f) => f.home_id === process.env.HOME);
+      if (!homeFolder) {
+        return res.status(404).json({ error: 'Home folder not found' });
+      }
+      folderId = homeFolder._id.toString();
     }
 
     // Verify starting folder exists

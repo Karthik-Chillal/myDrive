@@ -1,4 +1,5 @@
 import LogoutButton from './LogoutButton';
+import Searchbar from './Searchbar';
 const Navbar = () => {
   return (
     <nav className="w-full bg-blue-200 border-b border-gray-200 shadow-sm flex justify-between items-center transition-all duration-300 p-5">
@@ -7,6 +8,9 @@ const Navbar = () => {
           <span className="text-green-500 ">my</span>
           <span className="text-black">Drive</span>
         </div>
+      </div>
+      <div>
+        <Searchbar></Searchbar>
       </div>
       <div className="flex items-center gap-4">
         <LogoutButton></LogoutButton>

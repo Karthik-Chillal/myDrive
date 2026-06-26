@@ -8,7 +8,7 @@ const App = () => {
   return (
     <div>
       {loading && (
-        <div className="fixed inset-0 z-100 flex items-center justify-center bg-black/40 backdrop-blur-sm">
+        <div className="fixed inset-0 z-[999] flex items-center justify-center bg-black/40 backdrop-blur-sm">
           <Loader />
         </div>
       )}
