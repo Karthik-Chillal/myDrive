@@ -7,6 +7,7 @@ import connectDB from './config/db.js';
 import { fileRouter } from './routes/fileRouter.js';
 import folderRouter from './routes/folderRouter.js';
 import cookieParser from 'cookie-parser';
+import searchRouter from './routes/searchRoutes.js';
 
 const app = express();
 app.use(
@@ -28,8 +29,9 @@ app.use('/auth', authRouter);
 app.use('/protected', protectedRoute);
 app.use('/files', fileRouter);
 app.use('/folders', folderRouter);
+app.use('/search', searchRouter);
 app.get('/', (req, res) => {
-  res.send('hello');
+  res.send('backend');
 });
 
 if (process.env.NODE_ENV !== 'test') {
