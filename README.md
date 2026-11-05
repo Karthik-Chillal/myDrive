@@ -1,8 +1,12 @@
-# myDrive : File Storage service
+# myDrive : File Storage Service
 
-[Github](https://github.com/Karthik-Chillal/myDrive/)
+> [!WARNING]
+> **The live demo is currently unavailable.** The backend is hosted on Railway, and the deployment is currently inactive due to Railway's paywall/hosting costs. As a result, authentication, file uploads, and other backend-dependent features will not work until the backend is redeployed.
+
+[GitHub](https://github.com/Karthik-Chillal/myDrive/)
 
 myDrive is an open-source cloud storage platform with a modern user interface for seamless file storage and sharing.
+
 
 ### Motivation:
 
